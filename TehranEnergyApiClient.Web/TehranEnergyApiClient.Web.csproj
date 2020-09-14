@@ -27,4 +27,8 @@
     <Folder Include="ORM\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\TehranEnergyApiClient.DomainModels\TehranEnergyApiClient.DomainModels.csproj" />
+  </ItemGroup>
+
 </Project>
