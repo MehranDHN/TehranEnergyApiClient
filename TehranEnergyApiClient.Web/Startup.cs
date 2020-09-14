@@ -14,6 +14,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MediatR;
+using TehranEnergyApiClient.Web.Configuration;
 
 namespace TehranEnergyApiClient.Web
 {
@@ -35,6 +36,8 @@ namespace TehranEnergyApiClient.Web
             services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
+
+            services.AddDatabaseConfiguration(Configuration);
             services.AddMediatR(typeof(Startup));
 
             services.AddSwaggerGen(options =>

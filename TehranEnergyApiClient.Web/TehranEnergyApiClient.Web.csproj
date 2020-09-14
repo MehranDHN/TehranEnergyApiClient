@@ -24,7 +24,6 @@
     <Folder Include="Extensions\" />
     <Folder Include="MapperProfile\" />
     <Folder Include="CQRS\" />
-    <Folder Include="ORM\" />
   </ItemGroup>
 
   <ItemGroup>
