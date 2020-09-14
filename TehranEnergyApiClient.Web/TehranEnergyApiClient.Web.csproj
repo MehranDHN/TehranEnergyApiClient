@@ -21,7 +21,6 @@
 
   <ItemGroup>
     <Folder Include="BackgroundService\" />
-    <Folder Include="Extensions\" />
   </ItemGroup>
 
   <ItemGroup>
