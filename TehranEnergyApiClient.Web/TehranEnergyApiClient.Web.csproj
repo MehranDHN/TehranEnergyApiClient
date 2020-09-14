@@ -23,7 +23,6 @@
     <Folder Include="BackgroundService\" />
     <Folder Include="Extensions\" />
     <Folder Include="MapperProfile\" />
-    <Folder Include="CQRS\" />
   </ItemGroup>
 
   <ItemGroup>
