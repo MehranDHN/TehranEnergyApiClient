@@ -38,6 +38,7 @@ namespace TehranEnergyApiClient.Web
 
 
             services.AddDatabaseConfiguration(Configuration);
+            services.AddAutoMapperConfiguration();
             services.AddMediatR(typeof(Startup));
 
             services.AddSwaggerGen(options =>
