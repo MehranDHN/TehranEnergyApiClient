@@ -22,7 +22,6 @@
   <ItemGroup>
     <Folder Include="BackgroundService\" />
     <Folder Include="Extensions\" />
-    <Folder Include="MapperProfile\" />
   </ItemGroup>
 
   <ItemGroup>
