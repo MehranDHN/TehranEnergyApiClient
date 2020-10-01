@@ -21,8 +21,8 @@ namespace TehranEnergyApiClient.Web.CQRS.PowerCounter.Queries
         private readonly IMapper _mapper;
         public PowerCounterHandler(EnergyDbContext context, IMapper mapper)
         {
-            _context = context;
-            _mapper = mapper;
+            _context = context ?? throw new ArgumentNullException(nameof(context));
+            _mapper = mapper ?? throw new ArgumentNullException(nameof(mapper));
         }
         public async Task<IEnumerable<PowerSrcInfoDto>> Handle(GetPowerCounterListQuery request, CancellationToken cancellationToken)
         {
@@ -35,6 +35,7 @@ namespace TehranEnergyApiClient.Web.CQRS.PowerCounter.Queries
             var powerCounterEntities = await _context.PowerSrcInfo
                 .Where(request.Condition)
                 .AsQueryable()
+                .Include(c => c.UsageDetails)
                 .Include(c => c.TargetCounter)
                 .ToListAsync();
             List<PowerSrcInfoDto> dtoList = _mapper.Map<List<PowerSrcInfoDto>>(powerCounterEntities);
@@ -42,7 +43,7 @@ namespace TehranEnergyApiClient.Web.CQRS.PowerCounter.Queries
         }
         public async Task<PowerSrcInfoDto> Handle(FindPowerCounterQuery request, CancellationToken cancellationToken)
         {
-            var powerCounterEntity = await _context.PowerSrcInfo.Include(c => c.TargetCounter).FirstOrDefaultAsync(c => c.bill_identifier == request.TagIdentity);
+            var powerCounterEntity = await _context.PowerSrcInfo.Include(c => c.UsageDetails).Include(c => c.TargetCounter).FirstOrDefaultAsync(c => c.bill_identifier == request.TagIdentity);
             PowerSrcInfoDto dto = _mapper.Map<PowerSrcInfoDto>(powerCounterEntity);
             return dto;
         }

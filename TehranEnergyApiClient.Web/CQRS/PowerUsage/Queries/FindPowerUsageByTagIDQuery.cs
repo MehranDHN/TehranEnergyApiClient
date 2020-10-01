@@ -7,7 +7,12 @@ using TehranEnergyApiClient.DomainModels.Models;
 
 namespace TehranEnergyApiClient.Web.CQRS.PowerUsage.Queries
 {
-    public class GetPowerUsageListQuery : IRequest<IEnumerable<PowerSrcUsage>>
+    public class FindPowerUsageByTagIDQuery : IRequest<PowerSrcUsage>
     {
+        public FindPowerUsageByTagIDQuery(string tagid)
+        {
+            TagIdentity = tagid;
+        }
+        public string TagIdentity { get; set; }
     }
 }
