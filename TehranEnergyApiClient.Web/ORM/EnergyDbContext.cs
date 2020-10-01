@@ -41,6 +41,12 @@ namespace TehranEnergyApiClient.Web.ORM
     .WithOne(o => o.TargetBuilding).HasForeignKey<PowerCounter>(f => f.LocationID);
 
 
+            modelBuilder.Entity<PowerSrcUsage>()
+              .HasOne(d => d.PowerSource)
+              .WithMany(o => o.UsageDetails)
+              .HasForeignKey(d => d.bill_identifier);
+
+
 
             base.OnModelCreating(modelBuilder);
         }

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using TehranEnergyApiClient.DomainModels.Models;
 
 namespace TehranEnergyApiClient.DomainModels.DTO
 {
@@ -38,5 +39,6 @@ namespace TehranEnergyApiClient.DomainModels.DTO
         public string contract_demand { get; set; }
         public int buildingId { get; set; }
         public string buildingName { get; set; }
+        public List<PowerSrcUsage> UsageDetails { get; set; }
     }
 }

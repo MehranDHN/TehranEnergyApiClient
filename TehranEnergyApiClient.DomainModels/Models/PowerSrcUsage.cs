@@ -55,6 +55,8 @@ namespace TehranEnergyApiClient.DomainModels.Models
         public Nullable<System.DateTime> reject_date { get; set; }
         public Nullable<System.DateTime> reading_date { get; set; }
 
+        public PowerSrcInfo PowerSource { get; set; }
+
         public Nullable<int> TotalUsage
         {
             get

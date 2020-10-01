@@ -26,7 +26,7 @@ namespace TehranEnergyApiClient.Web.CQRS.PowerCounter.Queries
         }
         public async Task<IEnumerable<PowerSrcInfoDto>> Handle(GetPowerCounterListQuery request, CancellationToken cancellationToken)
         {
-            var powerCounterEntities = await _context.PowerSrcInfo.Include(c => c.TargetCounter).ToListAsync();
+            var powerCounterEntities = await _context.PowerSrcInfo.Include(c => c.UsageDetails).Include(c => c.TargetCounter).ToListAsync();
             List<PowerSrcInfoDto> dtoList = _mapper.Map<List<PowerSrcInfoDto>>(powerCounterEntities);
             return dtoList;
         }
