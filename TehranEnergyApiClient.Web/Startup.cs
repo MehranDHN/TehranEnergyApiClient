@@ -63,10 +63,17 @@ namespace TehranEnergyApiClient.Web
                 .AddNewtonsoftJson(options =>
                 options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
             );
+            //services.Configure<ExternalServicesConfig>(Configuration.GetSection(
+            //                            ExternalServicesConfig.PowerCounterSrcInfo));
 
+            //services.Configure<ExternalServicesConfig>(ExternalServicesConfig.PowerCounterSrcInfo,
+            //                                       Configuration.GetSection("ExternalServices:Url"));
+
+            services.Configure<ExternalServicesConfig>(Configuration.GetSection("ExternalServices:PowerCounterSrcInfo"));
             services.AddRazorPages();
 
-            
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

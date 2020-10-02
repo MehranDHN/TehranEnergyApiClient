@@ -20,10 +20,8 @@ namespace TehranEnergyApiClient.Web.Services
 
         public PowerCounterSrcApiClient(HttpClient httpClient, IOptionsMonitor<ExternalServicesConfig> options, ILogger<PowerCounterSrcApiClient> logger)
         {
-           // var externalServiceConfig = options.Get(ExternalServicesConfig.PowerCounterSrcInfo);
-
-            httpClient.BaseAddress = new Uri("https://localhost:44345");
-
+            var externalServiceConfig = options.Get(ExternalServicesConfig.PowerCounterSrcInfo);
+            httpClient.BaseAddress = new Uri(externalServiceConfig.Url);
             _httpClient = httpClient;
             _logger = logger;
         }
