@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using TehranEnergyApiClient.Web.CQRS.PowerCounter.Queries;
+using TehranEnergyApiClient.Web.CQRS.PowerUsage.Queries;
 using TehranEnergyApiClient.Web.Models;
 using TehranEnergyApiClient.Web.ORM;
 
@@ -29,9 +30,12 @@ namespace TehranEnergyApiClient.Web.Controllers
         public async Task<IActionResult> Index()
         {
             var counters = await _mediator.Send(new GetPowerCounterListQuery());
+            var targetCounter = counters.FirstOrDefault();
+            var usages = await _mediator.Send(new FindPowerUsageByTagIDQuery(targetCounter.bill_identifier));
             //var data = _context.PowerSrcInfo.Include(ps => ps.UsageDetails).ToList();
             //_logger.LogInformation($"PowerSource Count {data.Count}");
             //_logger.LogInformation($"PowerSource Count {counters.Count()}");
+            _logger.LogInformation($"PowerCounter {targetCounter.bill_identifier} has {usages.Count()} usage history");
             return View();
         }
 

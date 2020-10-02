@@ -15,6 +15,9 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using MediatR;
 using TehranEnergyApiClient.Web.Configuration;
+using TehranEnergyApiClient.Web.BackgroundServices;
+using TehranEnergyApiClient.Web.CQRS.PowerCounter.Queries;
+using TehranEnergyApiClient.DomainModels.DTO;
 
 namespace TehranEnergyApiClient.Web
 {
@@ -30,6 +33,7 @@ namespace TehranEnergyApiClient.Web
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            
             services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(
                     Configuration.GetConnectionString("DefaultConnection")));
@@ -37,18 +41,32 @@ namespace TehranEnergyApiClient.Web
                 .AddEntityFrameworkStores<ApplicationDbContext>();
 
 
+            
+
             services.AddDatabaseConfiguration(Configuration);
             services.AddAutoMapperConfiguration();
             services.AddMediatR(typeof(Startup));
             services.AddPowerCounterClientServices();
+            services.AddHostedService<PowerSourceReadingService>();
+
+            //services.AddTransient<GetPowerCounterListQuery>();
+            //services.AddTransient<PowerCounterHandler>();
+            //services.AddTransient<IRequest<IEnumerable<PowerSrcInfoDto>>, PowerCounterHandler>();
 
             services.AddSwaggerGen(options =>
             {
                 options.SwaggerDoc("v1", new OpenApiInfo { Title = "Energy API", Version = "v1" });
                 options.CustomSchemaIds(x => x.FullName);
             });
-            services.AddControllersWithViews();
+            //services.AddControllersWithViews();
+            services.AddControllersWithViews()
+                .AddNewtonsoftJson(options =>
+                options.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore
+            );
+
             services.AddRazorPages();
+
+            
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

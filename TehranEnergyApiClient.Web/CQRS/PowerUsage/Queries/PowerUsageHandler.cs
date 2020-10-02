@@ -14,7 +14,7 @@ namespace TehranEnergyApiClient.Web.CQRS.PowerUsage.Queries
     public class PowerUsageHandler :
         IRequestHandler<GetPowerUsageListQuery, IEnumerable<PowerSrcUsage>>,
         IRequestHandler<GetPowerUsageWhereQuery, IEnumerable<PowerSrcUsage>>,
-        IRequestHandler<FindPowerUsageByTagIDQuery, PowerSrcUsage>,
+        IRequestHandler<FindPowerUsageByTagIDQuery, IEnumerable<PowerSrcUsage>>,
         IRequestHandler<FindPowerUsageQuery, PowerSrcUsage>
     {
         private readonly EnergyDbContext _context;
@@ -37,9 +37,12 @@ namespace TehranEnergyApiClient.Web.CQRS.PowerUsage.Queries
                 .Include(c => c.PowerSource).ToListAsync();
             return powerUsageEntities;
         }
-        public async Task<PowerSrcUsage> Handle(FindPowerUsageByTagIDQuery request, CancellationToken cancellationToken)
+        public async Task<IEnumerable<PowerSrcUsage>> Handle(FindPowerUsageByTagIDQuery request, CancellationToken cancellationToken)
         {
-            var powerUsageEntities = await _context.PowerSrcUsage.Include(c => c.PowerSource).FirstOrDefaultAsync(c => c.bill_identifier == request.TagIdentity);
+            var powerUsageEntities = await _context.PowerSrcUsage
+                .Where(c => c.bill_identifier==request.TagIdentity)
+                .AsQueryable()
+                .Include(c => c.PowerSource).ToListAsync();
             return powerUsageEntities;
         }
         public async Task<PowerSrcUsage> Handle(FindPowerUsageQuery request, CancellationToken cancellationToken)
