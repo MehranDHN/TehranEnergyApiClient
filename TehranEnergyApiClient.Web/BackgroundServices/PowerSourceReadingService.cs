@@ -37,14 +37,18 @@ namespace TehranEnergyApiClient.Web.BackgroundServices
 
                     while (!stoppingToken.IsCancellationRequested)
                     {
+                        // Cache Not implemented yet
                         foreach (var counter in powerCounters)
                         {
                             _logger.LogInformation($"Processing {counter.bill_identifier}");
+                            // We have our own HttpClient Extension to support extra Authentication scenarios
                             var usageList = await powerSourceHttpClient.GetPowerUsageInfoAsync(counter.bill_identifier, stoppingToken);
+                            // We should send the response to ElasticSearch Repository which is not implemented yet
                             _logger.LogInformation($"Sucessfully recieved {usageList.Count()} usage Info");
                             _logger.LogInformation($"Processing {counter.bill_identifier} compleeted");
-                            await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
+                            
                         }
+                        await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
                     }
                 }
             }

@@ -17,11 +17,14 @@ namespace TehranEnergyApiClient.Web.Services
     {
         private readonly HttpClient _httpClient;
         private readonly ILogger<PowerCounterSrcApiClient> _logger;
+        private readonly IOptionsMonitor<ExternalServicesConfig> _optionsDelegate;
 
         public PowerCounterSrcApiClient(HttpClient httpClient, IOptionsMonitor<ExternalServicesConfig> options, ILogger<PowerCounterSrcApiClient> logger)
         {
-            var externalServiceConfig = options.Get(ExternalServicesConfig.PowerCounterSrcInfo);
-            httpClient.BaseAddress = new Uri(externalServiceConfig.Url);
+            _optionsDelegate = options ?? throw new ArgumentNullException(nameof(options));
+            //var externalServiceConfig = options.Get(ExternalServicesConfig.PowerCounterSrcInfo);
+            httpClient.BaseAddress = new Uri(_optionsDelegate.CurrentValue.Url);
+
             _httpClient = httpClient;
             _logger = logger;
         }
