@@ -65,4 +65,68 @@ namespace TehranEnergyApiClient.DomainModels.Models
             }
         }
     }
+
+
+
+    public class NewPowerSrcUsage
+    {
+        public int bill_serial { get; set; }
+        public int sale_year { get; set; }
+        public int sale_prd { get; set; }
+        public DateTime issue_date { get; set; }
+        public int process_status { get; set; }
+        public DateTime reject_date { get; set; }
+        public DateTime prev_reading_date { get; set; }
+        public DateTime reading_date { get; set; }
+        public int normal_cons { get; set; }
+        public int peak_cons { get; set; }
+        public int low_cons { get; set; }
+        public int friday_cons { get; set; }
+        public int react_cons { get; set; }
+        public int demand_read { get; set; }
+        public int avg_cost { get; set; }
+        public int bill_amt { get; set; }
+        public int gross_amt { get; set; }
+        public int insurance_amt { get; set; }
+        public int tax_amt { get; set; }
+        public int paytoll_amt { get; set; }
+        public int power_paytoll_amt { get; set; }
+        public int previous_energy_debit { get; set; }
+        public int energy_amt { get; set; }
+        public int reactive_amt { get; set; }
+        public int demand_amt { get; set; }
+        public int subsc_amt { get; set; }
+        public int season_amt { get; set; }
+        public int license_expire_amt { get; set; }
+        public int free_amt { get; set; }
+        public int gas_discount_amt { get; set; }
+        public int discount_amt { get; set; }
+        public int warm_amt { get; set; }
+        public int cold_amt { get; set; }
+        public int warm_days { get; set; }
+        public int cold_days { get; set; }
+        public int total_days { get; set; }
+        public int bill_type { get; set; }
+        public int bill_status { get; set; }
+        public long bill_identifier { get; set; }
+        public int prev_normaltime_reading { get; set; }
+        public int prev_peaktime_reading { get; set; }
+        public int prev_reactive_normaltime { get; set; }
+        public int prev_lowtime_reading { get; set; }
+        public int prev_weekendtime_reading { get; set; }
+        public int active_normaltime_reading { get; set; }
+        public int active_peaktime_reading { get; set; }
+        public int active_lowtime_reading { get; set; }
+        public int active_weekendtime_reading { get; set; }
+        public int reactive_normaltime_reading { get; set; }
+        public Nullable<int> TotalUsage
+        {
+            get
+            {
+                return normal_cons + peak_cons + low_cons;
+            }
+        }
+    }
+
+
 }

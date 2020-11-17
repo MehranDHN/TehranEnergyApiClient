@@ -24,8 +24,8 @@ namespace TehranEnergyApiClient.Web.Services
             _optionsDelegate = options ?? throw new ArgumentNullException(nameof(options));
             //var externalServiceConfig = options.Get(ExternalServicesConfig.PowerCounterSrcInfo);
             httpClient.BaseAddress = new Uri(_optionsDelegate.CurrentValue.Url);
-
             _httpClient = httpClient;
+            //_httpClient.SetBearerToken("");
             _logger = logger;
         }
 
@@ -61,6 +61,7 @@ namespace TehranEnergyApiClient.Web.Services
             try
             {
                 var response = await _httpClient.GetAsync(path, cancellationToken);
+                //response.EnsureSuccessStatusCode
                 _logger.LogInformation($"API usage call Result Code {response.StatusCode}");
                 if (!response.IsSuccessStatusCode)
                 {
