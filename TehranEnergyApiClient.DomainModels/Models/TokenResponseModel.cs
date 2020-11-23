@@ -11,11 +11,11 @@ namespace TehranEnergyApiClient.DomainModels.Models
         public int status { get; set; }
         public string SessionKey { get; set; }
         public string message { get; set; }
-        public Data data { get; set; }
+        public TokenInfoData data { get; set; }
         public object error { get; set; }
     }
 
-    public class Data
+    public class TokenInfoData
     {
         public int id { get; set; }
         public string firstName { get; set; }

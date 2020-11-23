@@ -12,6 +12,7 @@ using TehranEnergyApiClient.Web.ORM;
 using Microsoft.Extensions.DependencyInjection;
 using TehranEnergyApiClient.DomainModels.DTO;
 using TehranEnergyApiClient.Web.Services;
+using TehranEnergyApiClient.DomainModels.Models;
 
 namespace TehranEnergyApiClient.Web.BackgroundServices
 {
@@ -45,12 +46,18 @@ namespace TehranEnergyApiClient.Web.BackgroundServices
                             if(!processedList.Contains(counter.bill_identifier))
                             {
                                 processedList.Add(counter.bill_identifier);
+                                // We should extend our Configuration to get this info from there
+                                var salesInputModel = new SaleInputModel
+                                {
+                                    BILL_IDENTIFIER = counter.bill_identifier,
+                                    fromyear = "97",
+                                    MobileNo = "0999999999"
+                                };
                                 _logger.LogInformation($"Processing {counter.bill_identifier}");
                                 // We have our own HttpClient Extension to support extra Authentication scenarios
-                                var usageList = await powerSourceHttpClient.GetPowerUsageInfoAsync(counter.bill_identifier, stoppingToken);
-
+                                var usageResponse = await powerSourceHttpClient.PostForSalesData(salesInputModel, stoppingToken);
                                 // We should send the response to ElasticSearch Repository which is not implemented yet
-                                _logger.LogInformation($"Sucessfully recieved {usageList.Count()} usage Info");
+                                _logger.LogInformation($"Sucessfully recieved {usageResponse.data.Count()} usage Info");
                                 // Awaitable Request for Payment Info here
                                 _logger.LogInformation($"Processing {counter.bill_identifier} compleeted");
                             }

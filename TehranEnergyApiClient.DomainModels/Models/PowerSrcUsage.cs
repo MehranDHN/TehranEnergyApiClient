@@ -67,6 +67,14 @@ namespace TehranEnergyApiClient.DomainModels.Models
     }
 
 
+    public class PowerUsageResponse
+    {
+        public string TimeStamp { get; set; }
+        public int status { get; set; }
+        public string SessionKey { get; set; }
+        public string message { get; set; }
+        public List<NewPowerSrcUsage> data { get; set; }
+    }
 
     public class NewPowerSrcUsage
     {
@@ -126,6 +134,13 @@ namespace TehranEnergyApiClient.DomainModels.Models
                 return normal_cons + peak_cons + low_cons;
             }
         }
+    }
+
+    public class SaleInputModel
+    {
+        public string BILL_IDENTIFIER { get; set; }
+        public string MobileNo { get; set; }
+        public string fromyear { get; set; }
     }
 
 

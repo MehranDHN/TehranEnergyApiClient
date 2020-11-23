@@ -26,8 +26,15 @@ namespace TehranEnergyApiClient.Web.Services
             //var externalServiceConfig = options.Get(ExternalServicesConfig.PowerCounterSrcInfo);
             httpClient.BaseAddress = new Uri(_optionsDelegate.CurrentValue.BaseUrl);
             _httpClient = httpClient;
-            //_httpClient.SetBearerToken("");
             _logger = logger;
+            InitializeToken(_optionsDelegate.CurrentValue);
+
+
+        }
+        private async void InitializeToken(ExternalServicesConfig config)
+        {
+            var tokenResponse = await PostForTokenAsync(config.TokenEndpoint, config.UserName, config.Password);
+            _httpClient.SetBearerToken(tokenResponse.data.token);
         }
 
         public async Task<List<PowerSrcInfoDto>> GetPowerCounterSrcInfoAsync(CancellationToken cancellationToken = default)
@@ -55,9 +62,9 @@ namespace TehranEnergyApiClient.Web.Services
 
             return null;
         }
-        public async Task<List<PowerSrcUsage>> GetPowerUsageInfoAsync(string tagid, CancellationToken cancellationToken = default)
+        public async Task<PowerUsageResponse> GetPowerUsageInfoAsync(SaleInputModel inputModel, CancellationToken cancellationToken = default)
         {
-            string path = $"api/PowerUsage/GetPowerUsage/{tagid}";
+            string path = $"api/PowerUsage/GetPowerUsage/{inputModel.BILL_IDENTIFIER}";
 
             try
             {
@@ -70,7 +77,7 @@ namespace TehranEnergyApiClient.Web.Services
                     return null;
                 }
 
-                var content = await response.Content.ReadAsAsync<List<PowerSrcUsage>>(cancellationToken);
+                var content = await response.Content.ReadAsAsync<PowerUsageResponse>(cancellationToken);
 
                 return content;
             }
@@ -81,7 +88,7 @@ namespace TehranEnergyApiClient.Web.Services
 
             return null;
         }
-        private async Task<TokenResponseModel> PostForTokenAsync(string endPointPath, string username, string password, CancellationToken cancellationToken = default)
+        public async Task<TokenResponseModel> PostForTokenAsync(string endPointPath, string username, string password, CancellationToken cancellationToken = default)
         {
             try
             {
@@ -107,6 +114,37 @@ namespace TehranEnergyApiClient.Web.Services
                 }
                 var content = await response.Content.ReadAsAsync<TokenResponseModel> (cancellationToken);
                 _logger.LogInformation($"API TOKEN Recieve token = {content.data.token}");
+                return content;
+            }
+            catch (HttpRequestException e)
+            {
+                _logger.LogError(e, "Failed to get PowerUsage data from internal API");
+            }
+
+            return null;
+        }
+        public async Task<PowerUsageResponse> PostForSalesData(SaleInputModel inputModel, CancellationToken cancellationToken = default)
+        {
+            try
+            {
+                var serializeSalesInput = JsonConvert.SerializeObject(inputModel);
+                var postRequest = new HttpRequestMessage(HttpMethod.Post, _optionsDelegate.CurrentValue.SaleEndpoint);
+                postRequest.Headers.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+                postRequest.Content = new StringContent(serializeSalesInput);
+                postRequest.Content.Headers.ContentType = new System.Net.Http.Headers.MediaTypeHeaderValue("application/json");
+
+                var response = await _httpClient.SendAsync(postRequest);
+                response.EnsureSuccessStatusCode();
+
+                _logger.LogInformation($"API For Sales call Result Code {response.StatusCode}");
+                if (!response.IsSuccessStatusCode)
+                {
+                    _logger.LogInformation($"API For Sales call is failed");
+                    return null;
+                }
+
+                var content = await response.Content.ReadAsAsync<PowerUsageResponse>(cancellationToken);
+
                 return content;
             }
             catch (HttpRequestException e)

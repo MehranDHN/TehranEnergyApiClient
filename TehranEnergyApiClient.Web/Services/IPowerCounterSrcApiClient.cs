@@ -13,6 +13,9 @@ namespace TehranEnergyApiClient.Web.Services
     {
         Task<List<PowerSrcInfoDto>> GetPowerCounterSrcInfoAsync(CancellationToken cancellationToken = default);
 
-        Task<List<PowerSrcUsage>> GetPowerUsageInfoAsync(string tagid,CancellationToken cancellationToken = default);
+        Task<PowerUsageResponse> GetPowerUsageInfoAsync(SaleInputModel inputModel, CancellationToken cancellationToken = default);
+        Task<TokenResponseModel> PostForTokenAsync(string endPointPath, string username, string password, CancellationToken cancellationToken = default);
+
+        Task<PowerUsageResponse> PostForSalesData(SaleInputModel inputModel, CancellationToken cancellationToken = default);
     }
 }

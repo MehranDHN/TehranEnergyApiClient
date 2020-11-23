@@ -14,5 +14,6 @@ namespace TehranEnergyApiClient.Web.Configuration
         public string Password { get; set; }
 
         public string TokenEndpoint { get; set; }
+        public string SaleEndpoint { get; set; }
     }
 }
