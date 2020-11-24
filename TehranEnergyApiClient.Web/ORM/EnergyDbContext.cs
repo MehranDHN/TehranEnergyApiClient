@@ -16,6 +16,7 @@ namespace TehranEnergyApiClient.Web.ORM
         public DbSet<PowerSrcInfo> PowerSrcInfo { get; set; }
 
         public DbSet<PowerSrcUsage> PowerSrcUsage { get; set; }
+        public DbSet<PowerSrcUsageV2> PowerSrcUsageV2 { get; set; }
 
         public DbSet<PowerSrcPayment> PowerSrcPayment { get; set; }
         public EnergyDbContext(DbContextOptions options) : base(options) { }
@@ -27,6 +28,7 @@ namespace TehranEnergyApiClient.Web.ORM
             modelBuilder.Entity<PowerSrcInfo>().HasKey(ps => new { ps.bill_identifier });
             modelBuilder.Entity<PowerSrcUsage>().HasKey(ps => new { ps.Pkid });
             modelBuilder.Entity<PowerSrcPayment>().HasKey(ps => new { ps.Pkid });
+            modelBuilder.Entity<PowerSrcUsageV2>().HasKey(ps => new { ps.Pkid });
 
             // I had to create a relation based on exact model in SAPA(Formal Restfull API Service Provider)
             modelBuilder.Entity<PowerSrcInfo>()
