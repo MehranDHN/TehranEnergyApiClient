@@ -26,7 +26,9 @@ namespace TehranEnergyApiClient.DomainModels.Models
         public string BldProfit { get; set; }
         public Nullable<int> DepartmentID { get; set; }
         public Nullable<int> EstimatedEmployees { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> BAreaMeter { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> AreaMeter { get; set; }
         public Nullable<double> SLon { get; set; }
         public Nullable<double> Slat { get; set; }

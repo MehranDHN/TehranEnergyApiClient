@@ -50,7 +50,7 @@ namespace TehranEnergyApiClient.Web.BackgroundServices
                                 var salesInputModel = new SaleInputModel
                                 {
                                     BILL_IDENTIFIER = counter.bill_identifier,
-                                    fromyear = "97",
+                                    fromyear = 92,
                                     MobileNo = "0999999999"
                                 };
                                 _logger.LogInformation($"Processing {counter.bill_identifier}");

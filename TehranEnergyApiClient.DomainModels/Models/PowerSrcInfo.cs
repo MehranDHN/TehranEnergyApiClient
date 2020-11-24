@@ -25,8 +25,11 @@ namespace TehranEnergyApiClient.DomainModels.Models
         public string mobile_number { get; set; }
         public string service_add { get; set; }
         public string service_post_code { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> total_bill_debt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> other_account_debt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> total_register_debt { get; set; }
         public string location_status { get; set; }
         public string serial_number { get; set; }

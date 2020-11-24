@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Text;
 
 namespace TehranEnergyApiClient.DomainModels.Models
@@ -23,27 +24,49 @@ namespace TehranEnergyApiClient.DomainModels.Models
         public Nullable<int> react_cons { get; set; }
         public Nullable<int> demand_read { get; set; }
         public Nullable<int> avg_cost { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> bill_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> gross_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> insurance_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> tax_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> paytoll_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> power_paytoll_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> previous_energy_deb { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> energy_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> reactive_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> demand_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> subsc_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> season_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> license_expire_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> free_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> warm_normal_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> warm_peak_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> warm_low_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> cold_normal_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> cold_peak_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> cold_low_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> gas_discount_amt { get; set; }
+        [Column(TypeName = "decimal(18,3)")]
         public Nullable<decimal> discount_amt { get; set; }
         public Nullable<int> warm_days { get; set; }
         public Nullable<int> cold_days { get; set; }
@@ -66,16 +89,6 @@ namespace TehranEnergyApiClient.DomainModels.Models
         }
     }
 
-
-    public class PowerUsageResponse
-    {
-        public string TimeStamp { get; set; }
-        public int status { get; set; }
-        public string SessionKey { get; set; }
-        public string message { get; set; }
-        public List<NewPowerSrcUsage> data { get; set; }
-    }
-
     public class NewPowerSrcUsage
     {
         public int bill_serial { get; set; }
@@ -93,24 +106,24 @@ namespace TehranEnergyApiClient.DomainModels.Models
         public int react_cons { get; set; }
         public int demand_read { get; set; }
         public int avg_cost { get; set; }
-        public int bill_amt { get; set; }
-        public int gross_amt { get; set; }
-        public int insurance_amt { get; set; }
-        public int tax_amt { get; set; }
-        public int paytoll_amt { get; set; }
-        public int power_paytoll_amt { get; set; }
+        public long bill_amt { get; set; }
+        public long gross_amt { get; set; }
+        public long insurance_amt { get; set; }
+        public long tax_amt { get; set; }
+        public long paytoll_amt { get; set; }
+        public long power_paytoll_amt { get; set; }
         public int previous_energy_debit { get; set; }
-        public int energy_amt { get; set; }
-        public int reactive_amt { get; set; }
-        public int demand_amt { get; set; }
-        public int subsc_amt { get; set; }
-        public int season_amt { get; set; }
-        public int license_expire_amt { get; set; }
-        public int free_amt { get; set; }
-        public int gas_discount_amt { get; set; }
-        public int discount_amt { get; set; }
-        public int warm_amt { get; set; }
-        public int cold_amt { get; set; }
+        public long energy_amt { get; set; }
+        public long reactive_amt { get; set; }
+        public long demand_amt { get; set; }
+        public long subsc_amt { get; set; }
+        public long season_amt { get; set; }
+        public long license_expire_amt { get; set; }
+        public long free_amt { get; set; }
+        public long gas_discount_amt { get; set; }
+        public long discount_amt { get; set; }
+        public long warm_amt { get; set; }
+        public long cold_amt { get; set; }
         public int warm_days { get; set; }
         public int cold_days { get; set; }
         public int total_days { get; set; }
@@ -136,11 +149,22 @@ namespace TehranEnergyApiClient.DomainModels.Models
         }
     }
 
+    public class PowerUsageResponse
+    {
+        public string TimeStamp { get; set; }
+        public int status { get; set; }
+        public string SessionKey { get; set; }
+        public string message { get; set; }
+        public List<NewPowerSrcUsage> data { get; set; }
+    }
+
+
+
     public class SaleInputModel
     {
         public string BILL_IDENTIFIER { get; set; }
         public string MobileNo { get; set; }
-        public string fromyear { get; set; }
+        public int fromyear { get; set; }
     }
 
 
