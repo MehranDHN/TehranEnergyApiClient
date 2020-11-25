@@ -76,5 +76,6 @@ namespace TehranEnergyApiClient.DomainModels.Models
         public Nullable<int> active_lowtime_reading { get; set; }
         public Nullable<int> active_weekendtime_reading { get; set; }
         public Nullable<int> reactive_normaltime_reading { get; set; }
+        public PowerSrcInfo PowerSource { get; set; }
     }
 }

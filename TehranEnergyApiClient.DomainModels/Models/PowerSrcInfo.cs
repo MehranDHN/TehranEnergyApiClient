@@ -44,5 +44,6 @@ namespace TehranEnergyApiClient.DomainModels.Models
 
         public virtual PowerCounter TargetCounter { get; set; }
         public ICollection<PowerSrcUsage> UsageDetails { get; set; }
+        public ICollection<PowerSrcUsageV2> UsageV2Details { get; set; }
     }
 }

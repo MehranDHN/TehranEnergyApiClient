@@ -13,6 +13,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TehranEnergyApiClient.DomainModels.DTO;
 using TehranEnergyApiClient.Web.Services;
 using TehranEnergyApiClient.DomainModels.Models;
+using TehranEnergyApiClient.Web.CQRS.PowerUsageV2.Commands;
 
 namespace TehranEnergyApiClient.Web.BackgroundServices
 {
@@ -35,15 +36,17 @@ namespace TehranEnergyApiClient.Web.BackgroundServices
                     var mediator = scope.ServiceProvider.GetRequiredService<IMediator>();
                     var powerSourceHttpClient = scope.ServiceProvider.GetRequiredService<IPowerCounterSrcApiClient>();
                     var powerCounters = await mediator.Send(new GetPowerCounterListQuery());
+                    int totalCounter = powerCounters.Count();
                     var processedList = new List<string>();
-
+                    _logger.LogInformation($"Total PowerCounters {totalCounter}");
+                    int ccounter = 1;
 
                     while (!stoppingToken.IsCancellationRequested)
                     {
                         // Cache Not implemented yet
                         foreach (var counter in powerCounters)
                         {
-                            if(!processedList.Contains(counter.bill_identifier))
+                            if (!processedList.Contains(counter.bill_identifier))
                             {
                                 processedList.Add(counter.bill_identifier);
                                 // We should extend our Configuration to get this info from there
@@ -53,11 +56,19 @@ namespace TehranEnergyApiClient.Web.BackgroundServices
                                     fromyear = 92,
                                     MobileNo = "0999999999"
                                 };
-                                _logger.LogInformation($"Processing {counter.bill_identifier}");
+                                _logger.LogInformation($"Processing {counter.bill_identifier} current= {ccounter++} from {totalCounter}");
                                 // We have our own HttpClient Extension to support extra Authentication scenarios
                                 var usageResponse = await powerSourceHttpClient.PostForSalesData(salesInputModel, stoppingToken);
                                 // We should send the response to ElasticSearch Repository which is not implemented yet
-                                _logger.LogInformation($"Sucessfully recieved {usageResponse.data.Count()} usage Info");
+                                _logger.LogInformation($"Sucessfully recieved {usageResponse.data.Count()} bills Info");
+                                foreach (var usageItem in usageResponse.data)
+                                {
+                                    usageItem.helper_flag = false;
+                                    await mediator.Send(new InsertNewUsageV2Command
+                                    {
+                                        UsageItem = usageItem
+                                    });
+                                }
                                 // Awaitable Request for Payment Info here
                                 _logger.LogInformation($"Processing {counter.bill_identifier} compleeted");
                             }
@@ -66,12 +77,12 @@ namespace TehranEnergyApiClient.Web.BackgroundServices
                                 _logger.LogInformation($"Already Exists {counter.bill_identifier}");
                             }
                         }
-                       
+
                         await Task.Delay(TimeSpan.FromSeconds(3), stoppingToken);
                     }
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "Error Occured ", null);
             }
